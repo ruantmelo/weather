@@ -23,17 +23,18 @@ jobs:
         with:
           node-version: '14.x'
 
+      - name: Setup .env
+        run: |
+              touch .env
+              echo 'VITE_API_KEY=${{ secrets.VITE_API_KEY }}' >> .env
+
       - name: Build dist
-        env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
         run: |
               yarn
               yarn build
-
+      
       - name: Push to gh-pages
         uses: ptienchuan/deploy-github-pages-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           source-directory: "dist"
           target-branch: "gh-pages"
