@@ -35,6 +35,8 @@ jobs:
       
       - name: Push to gh-pages
         uses: ptienchuan/deploy-github-pages-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           source-directory: "dist"
           target-branch: "gh-pages"
