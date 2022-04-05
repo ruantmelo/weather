@@ -1,0 +1,44 @@
+
+
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Setup .env
+        run: |
+              touch .env
+              echo 'VITE_API_KEY=${{ secrets.VITE_API_KEY }}' >> .env
+
+      - name: Build dist
+        run: |
+              yarn
+              yarn build
+      
+      - name: Push to gh-pages
+        uses: ptienchuan/deploy-github-pages-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          source-directory: "dist"
+          target-branch: "gh-pages"
+          user-name: "deploy[bot]"
+          user-email: "deploy[bot]@noreply.github.com"
