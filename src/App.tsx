@@ -79,7 +79,7 @@ function App() {
             console.log('weatherResponse', weatherResponse.data);
             setWeather(weatherResponse.data);
 
-            if(!isNight(weatherResponse.data.sys.sunset)){
+            if(isNight(weatherResponse.data.sys.sunset)){
               setMode(Mode.NIGHT);
             }
            
